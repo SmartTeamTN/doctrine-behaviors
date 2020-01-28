@@ -22,12 +22,10 @@ use SmartTeam\DoctrineBehaviors\Model\Entity as EntityModel;
 trait HasFreezable
 {
     /**
-     * @var array
+     * @return array|null
      */
-    protected $_freezables = [];
-
     public function getFreezables(): ?array
     {
-        return $this->_freezables;
+        return isset($this->_freezables) && is_array($this->_freezables) ? $this->_freezables : [];
     }
 }

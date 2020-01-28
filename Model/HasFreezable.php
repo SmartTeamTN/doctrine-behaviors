@@ -46,6 +46,15 @@ trait HasFreezable
             ];
         }
 
+        if (is_object($entity)) {
+            if (empty($entity->getFreezables())) {
+                return [
+                    'status' => false,
+                    'message' => "Class {$class} does not define \$_freezables",
+                ];
+            }
+        }
+
         return [
             'status' => true,
         ];
