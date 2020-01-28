@@ -1,0 +1,22 @@
+{
+    "name": "smart-team/doctrine-behaviors",
+    "description": "Provides some doctrine behaviors/types",
+    "type": "symfony-bundle",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Takieddine MESSAOUDI",
+            "email": "tmessaoudi@smart-team.tn"
+        }
+    ],
+    "require": {
+        "php": "^7.1",
+        "symfony/framework-bundle": "^4.2",
+        "symfony/orm-pack": "^1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "SmartTeam\\DoctrineBehaviors\\": ""
+        }
+    }
+}

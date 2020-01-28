@@ -1,0 +1,4 @@
+services:
+  SmartTeam\DoctrineBehaviors\EventListener\DoctrineEventListener:
+    tags:
+      - { name: doctrine.event_listener, event: postLoad}
