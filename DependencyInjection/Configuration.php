@@ -27,16 +27,6 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root(self::ROOT_NAMESPACE);
 
-        $rootNode
-            ->children()
-                ->arrayNode('available_languages')
-                    ->scalarPrototype()
-                    ->end()
-                    ->defaultValue([])
-                ->end()
-            ->end()
-        ;
-
         return $treeBuilder;
     }
 }

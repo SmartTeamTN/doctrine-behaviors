@@ -6,8 +6,6 @@
 
 namespace SmartTeam\DoctrineBehaviors\Doctrine\DBAL\Types;
 
-use SmartTeam\DoctrineBehaviors\EventListener\DoctrineEventListener;
-use SmartTeam\DoctrineBehaviors\Model\Entity as EntityModel;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
 use SmartTeam\DoctrineBehaviors\Model\Freezable as FreezableModel;
@@ -51,29 +49,7 @@ final class FreezableEntityType extends Type
         }
         unset($freezable);
 
-        /**
-         * @var $doctrineEventListener DoctrineEventListener
-         */
-        $doctrineEventListener = $platform->getEventManager()->getListeners('postLoad')['_service_SmartTeam\DoctrineBehaviors\EventListener\DoctrineEventListener'];
-        $entityManager = $doctrineEventListener->getEntityManager();
-
-        try {
-            $entityRepository = $entityManager->getRepository(EntityModel::getClass($value));
-        } catch (Exception $exception) {
-            return null;
-        }
-
-        try {
-            $entity = $entityRepository->find($value->getId()->toString());
-        } catch (Exception $exception) {
-            $entity = $value;
-        }
-
-        unset($doctrineEventListener);
-        unset($entityManager);
-        unset($entityRepository);
-
-        return $entity->freezeState();
+        return $value->freezeState();
     }
 
     /**
@@ -95,45 +71,11 @@ final class FreezableEntityType extends Type
             throw new Exception($freezable['message']);
         }
 
-        /**
-         * @var $doctrineEventListener DoctrineEventListener
-         */
-        $doctrineEventListener = $platform->getEventManager()->getListeners('postLoad')['_service_SmartTeam\DoctrineBehaviors\EventListener\DoctrineEventListener'];
-
-        $entityManager = $doctrineEventListener->getEntityManager();
-
-        try {
-            $entityRepository = $entityManager->getRepository($metadata['class']);
-        } catch (Exception $exception) {
-            return null;
-        }
-
-        try {
-            $currentEntity = $entityRepository->find($metadata['data']['id']);
-        } catch (Exception $exception) {
-
-        }
-
         unset($doctrineEventListener);
         unset($entityRepository);
 
         $unfrozenEntity = new $metadata['class']();
-        $metadata['references'] = [];
-
-        $unfrozenEntity = $unfrozenEntity->unfreezeState($metadata, $currentEntity ?? null);
-        if (!empty($metadata['references'])) {
-            foreach ($metadata['references'] as &$reference) {
-                if (isset($reference['retrieval'])) continue;
-                if (!isset($reference['type']) || $reference['type'] !== 'reference') continue;
-                $referenceRepository = $entityManager->getRepository($reference['class']);
-                $referenceEntity = $referenceRepository->find($reference['id']);
-                if ($referenceEntity !== null) {
-                    $unfrozenEntity->{$reference['setter']}($referenceEntity);
-                    $reference['retrieval'] = 'entityManager';
-                }
-            }
-        }
-        return $unfrozenEntity;
+        return $unfrozenEntity->prepareToUnfreeze($metadata);
     }
 
     /**

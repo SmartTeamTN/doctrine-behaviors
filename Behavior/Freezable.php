@@ -147,4 +147,13 @@ trait Freezable
 
         return $this;
     }
+
+    public function prepareToUnfreeze(?array $metadata = []): self
+    {
+        if (!empty($metadata) && isset($metadata['class']) && $metadata['class'] === EntityModel::getClass($this) && isset($metadata['data'])) {
+            $this->metadata = $metadata;
+            $this->frozen = true;
+        }
+        return $this;
+    }
 }

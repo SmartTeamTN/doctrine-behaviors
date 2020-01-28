@@ -11,6 +11,7 @@ use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+use Exception;
 
 /**
  * Class SmartTeamDoctrineBehaviorsExtension
@@ -20,7 +21,7 @@ class SmartTeamDoctrineBehaviorsExtension extends Extension
 {
     /**
      * @inheritdoc
-     * @throws \Exception
+     * @throws Exception
      */
     public function load(array $configs, ContainerBuilder $container): void
     {
