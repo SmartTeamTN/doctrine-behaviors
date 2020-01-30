@@ -6,6 +6,8 @@
 
 namespace SmartTeam\DoctrineBehaviors\Model;
 
+use Doctrine\ORM\Proxy\Proxy;
+
 /**
  * Trait Entity
  *
@@ -13,18 +15,14 @@ namespace SmartTeam\DoctrineBehaviors\Model;
  */
 trait Entity
 {
-    /**
-     * @param $entity
-     *
-     * @return string
-     */
     public static function getClass($entity): string
     {
-        if (is_object($entity)) {
-            $class = get_class($entity);
-        } else {
-            $class = $entity;
+        $class = \is_string($entity) ? $entity : \get_class($entity);
+        $reflection = new \ReflectionClass($class);
+        if ($reflection->implementsInterface(Proxy::class)) {
+            $class = $reflection->getParentClass()->getName();
         }
-        return str_replace('Proxies\\__CG__\\', '', $class);
+
+        return $class;
     }
 }
