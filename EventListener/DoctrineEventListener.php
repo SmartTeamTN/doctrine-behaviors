@@ -58,6 +58,7 @@ class DoctrineEventListener
             foreach ($entity->getFreezables() as $freezableName) {
                 $freezableUpper = strtoupper(substr($freezableName, 0, 1)).substr($freezableName, 1, strlen($freezableName));
                 $freezableObject = $entity->{'get'.$freezableUpper}();
+                if ($freezableObject === null || !is_object($freezableObject)) continue;
                 $freezable = Freezable::isFreezable($freezableObject);
                 if (!$freezable['status']) {
                     throw new Exception($freezable['message']);

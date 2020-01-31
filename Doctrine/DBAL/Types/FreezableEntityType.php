@@ -75,7 +75,7 @@ final class FreezableEntityType extends Type
         unset($entityRepository);
 
         $unfrozenEntity = new $metadata['class']();
-        return $unfrozenEntity->prepareToUnfreeze($metadata);
+        return $unfrozenEntity->prepareToUnfreezeState($metadata);
     }
 
     /**

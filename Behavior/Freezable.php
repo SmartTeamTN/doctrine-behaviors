@@ -33,11 +33,6 @@ trait Freezable
     protected $frozenAt = null;
 
     /**
-     * @var bool|null
-     */
-    protected $masterPresent = null;
-
-    /**
      * @var object|null
      */
     protected $masterEntity = null;
@@ -61,14 +56,6 @@ trait Freezable
     public function isFrozen(): bool
     {
         return !is_bool($this->frozen) ? false : $this->frozen;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isMasterPresent(): bool
-    {
-        return is_bool($this->masterPresent) ? $this->masterPresent : false;
     }
 
     /**
@@ -107,8 +94,8 @@ trait Freezable
             $this->frozen = true;
             $this->frozenAt = $dateTime;
             $this->metadata = [
-                'class'    => EntityModel::getClass($this),
-                'data'     => $this->toJson(),
+                'class' => EntityModel::getClass($this),
+                'data' => $this->toJson(),
                 'datetime' => $dateTime->format(self::$FROZEN_DATE_FORMAT),
             ];
         }
@@ -142,14 +129,25 @@ trait Freezable
         $this->frozenAt = $frozenAt;
         $this->frozen = true;
         $this->masterEntity = $current;
-        $this->masterPresent = $current === null ? false : true;
         $this->metadata = $metadata;
 
         return $this;
     }
 
-    public function prepareToUnfreeze(?array $metadata = []): self
+    /**
+     * @param array|null $metadata
+     *
+     * @return self
+     *
+     * @throws Exception
+     */
+    public function prepareToUnfreezeState(?array $metadata = []): self
     {
+        $freezable = FreezableModel::isFreezable($this);
+        if (!$freezable['status']) {
+            throw new Exception($freezable['message']);
+        }
+        unset($freezable);
         if (!empty($metadata) && isset($metadata['class']) && $metadata['class'] === EntityModel::getClass($this) && isset($metadata['data'])) {
             $this->metadata = $metadata;
             $this->frozen = true;

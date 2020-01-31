@@ -65,7 +65,7 @@ trait Freezable
         }
 
         try {
-            $refectionClass->getMethod('prepareToUnfreeze');
+            $refectionClass->getMethod('prepareToUnfreezeState');
         } catch (ReflectionException $reflectionException) {
             return [
                 'status' => false,
