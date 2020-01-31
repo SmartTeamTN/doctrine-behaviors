@@ -98,6 +98,9 @@ trait Freezable
                 'data' => $this->toJson(),
                 'datetime' => $dateTime->format(self::$FROZEN_DATE_FORMAT),
             ];
+            if (method_exists($this, 'appendFreezeMetadata')) {
+                $this->appendFreezeMetadata();
+            }
         }
 
         return json_encode($this->getMetadata());

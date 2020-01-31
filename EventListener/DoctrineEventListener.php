@@ -71,7 +71,7 @@ class DoctrineEventListener
                 }
 
                 try {
-                    $currentEntity = $entityRepository->find($freezableObject->getMetadata()['data']['id']);
+                    $currentEntity = $entityRepository->find($freezableObject->getMetadata()['data'][$freezableObject->getMetadata()['params']['id'] ?? 'id']);
                 } catch (Exception $exception) {
                     $currentEntity = null;
                 }
