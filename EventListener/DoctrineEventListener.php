@@ -71,7 +71,11 @@ class DoctrineEventListener
                 }
 
                 try {
-                    $currentEntity = $entityRepository->find($freezableObject->getMetadata()['data'][$freezableObject->getMetadata()['params']['id'] ?? 'id']);
+                    if (is_string(@$freezableObject->getMetadata()['params']['id']) && !empty($freezableObject->getMetadata()['params']['id'])) {
+                        $currentEntity = $entityRepository->findOneBy([$freezableObject->getMetadata()['params']['id'] => $freezableObject->getMetadata()['data'][$freezableObject->getMetadata()['params']['id']]]);
+                    } else {
+                        $currentEntity = $entityRepository->find($freezableObject->getMetadata()['data']['id']);
+                    }
                 } catch (Exception $exception) {
                     $currentEntity = null;
                 }
