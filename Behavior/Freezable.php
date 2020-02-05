@@ -157,4 +157,14 @@ trait Freezable
         }
         return $this;
     }
+
+    /**
+     * @param array|null $params
+     *
+     * @return bool
+     */
+    public function isFreezerCall(?array $params = []): bool
+    {
+        return is_array($params) && @$params['freezer'] === true;
+    }
 }
