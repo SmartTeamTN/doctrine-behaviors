@@ -95,7 +95,7 @@ trait Freezable
             $this->frozenAt = $dateTime;
             $this->metadata = [
                 'class' => EntityModel::getClass($this),
-                'data' => $this->toJson(),
+                'data' => $this->toJson(['freezer' => true]),
                 'datetime' => $dateTime->format(self::$FROZEN_DATE_FORMAT),
             ];
             if (method_exists($this, 'appendFreezeMetadata')) {
