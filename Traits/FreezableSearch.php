@@ -18,12 +18,12 @@ use Doctrine\ORM\QueryBuilder;
 Trait FreezableSearch
 {
     /**
-     * @param QueryBuilder|null $queryBuilder
+     * @param object $queryBuilder
      * @param array|null $params
      *
-     * @return QueryBuilder|null
+     * @return object
      */
-    public static function search(?QueryBuilder &$queryBuilder, ?array $params): ?QueryBuilder
+    public static function search(&$queryBuilder, ?array $params): ?QueryBuilder
     {
         if (empty($params) || !is_array($params) || $queryBuilder === null) return $queryBuilder;
 
