@@ -11,8 +11,8 @@
     ],
     "require": {
         "php": "^7.1",
-        "symfony/framework-bundle": "^4.2",
-        "symfony/orm-pack": "^1.0",
+        "symfony/framework-bundle": "^4.2|^5.0",
+        "symfony/orm-pack": "^1.0|^2.0",
         "beberlei/doctrineextensions": "^1.2"
     },
     "autoload": {
