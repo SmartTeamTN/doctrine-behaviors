@@ -7,7 +7,7 @@
 
 namespace SmartTeam\DoctrineBehaviors\EventListener;
 
-use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
+use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\EntityManagerInterface;
 use SmartTeam\DoctrineBehaviors\Model\Freezable;
 use SmartTeam\DoctrineBehaviors\Model\HasFreezable;
